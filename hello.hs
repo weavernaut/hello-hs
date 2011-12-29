@@ -3,13 +3,12 @@ import System.Random
 import Data.Char
 
 main = do
-	hSetBuffering stdout LineBuffering
-	putStrLn "What is your name?"
-	name <- getLine
-	k <- insults
-	let s = lines (map toLower k)
-	i <- randomRIO (0,length s -1)
-	putStrLn ("You " ++ s !! i ++ ", " ++ name)
+  hSetBuffering stdout LineBuffering
+  putStrLn "What is your name?"
+  name <- getLine
+  insults <- fmap (lines . map toLower) getInsults
+  i <- randomRIO (0, length insults - 1)
+  putStrLn ("You " ++ insults !! i ++ ", " ++ name)
 
-insults :: IO String
-insults = readFile "insults.txt"
+getInsults :: IO String
+getInsults = readFile "insults.txt"
